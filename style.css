@@ -143,10 +143,6 @@
      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
  }
 
- .upload-img-wrapper {
-     clip-path: circle(50% at 50% 50%);
- }
-
  .upload-circle input[type="file"] {
      position: absolute;
      width: 100%;
@@ -260,23 +256,46 @@
      border-top: none;
      border-bottom-left-radius: 10px;
      border-bottom-right-radius: 10px;
-     padding: 18px 0px;
+     padding: 18px 0;
      flex-wrap: nowrap;
  }
 
- /* 🩵 Footer logos (balanced & responsive) */
+ /* ✅ Fixed, consistent logo sizing */
  .logo-bar img {
-     width: auto;
-     height: 90px;
+     height: 85px;
+     width: auto !important;
      object-fit: contain;
      vertical-align: middle;
+     flex-shrink: 0;
+     image-rendering: -webkit-optimize-contrast;
+     transform: none !important;
      filter: brightness(1.1) contrast(1.1);
  }
 
- /* smaller 4th logo */
+ /* smaller 4th logo adjust only slightly */
  .logo-bar img:last-child {
      height: 75px;
-     transform: scale(0.93);
+ }
+
+ /* ✅ Responsive consistency */
+ @media (max-width: 768px) {
+     .logo-bar img {
+         height: 80px;
+     }
+
+     .logo-bar img:last-child {
+         height: 70px;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .logo-bar img {
+         height: 70px;
+     }
+
+     .logo-bar img:last-child {
+         height: 60px;
+     }
  }
 
  /* ✅ Preview Styling */
