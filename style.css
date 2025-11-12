@@ -117,11 +117,11 @@
  }
 
  .upload-circle.expanded {
-     width: 46vw;
-     height: 46vw;
-     max-width: 260px;
-     max-height: 260px;
-     border-width: 1.8vw;
+     width: 52vw;
+     height: 52vw;
+     max-width: 285px;
+     max-height: 285px;
+     border-width: 2vw;
  }
 
  .upload-img-wrapper {
