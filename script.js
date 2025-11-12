@@ -9,15 +9,16 @@ function setupUploadListener(inputElement) {
     inputElement.addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
         const reader = new FileReader();
         reader.onload = (ev) => {
             photoArea.innerHTML = `
-        <div class="upload-img-wrapper">
-          <img src="${ev.target.result}" alt="photo">
-        </div>
-        <input type="file" id="uploadPhoto" accept="image/*"
-          style="opacity:0;position:absolute;inset:0;cursor:pointer;">
-      `;
+                <div class="upload-img-wrapper">
+                    <img src="${ev.target.result}" alt="photo">
+                </div>
+                <input type="file" id="uploadPhoto" accept="image/*"
+                    style="opacity:0;position:absolute;inset:0;cursor:pointer;">
+            `;
             setupUploadListener(photoArea.querySelector("#uploadPhoto"));
         };
         reader.readAsDataURL(file);
@@ -31,6 +32,18 @@ downloadBtn.addEventListener("click", async () => {
     const designation = document.getElementById("designation").value.trim();
     const pledge = document.getElementById("pledge").value;
 
+    // ✅ Check if photo uploaded
+    const hasPhoto = photoArea.querySelector("img");
+    if (!hasPhoto) {
+        Swal.fire({
+            icon: "warning",
+            title: "Photo Required",
+            text: "Please upload your photo before submitting your pledge.",
+        });
+        return;
+    }
+
+    // ✅ Check if text fields filled
     if (!name || !designation || !pledge) {
         Swal.fire({
             icon: "warning",
@@ -40,16 +53,23 @@ downloadBtn.addEventListener("click", async () => {
         return;
     }
 
+    // ✅ Replace quote box with preview
     const preview = document.createElement("div");
     preview.classList.add("final-preview");
     preview.style.fontFamily = "'Poppins', sans-serif";
+    preview.style.padding = "30px 40px";
+    preview.style.borderLeft = "6px solid #004aad";
+    preview.style.borderRadius = "12px";
+    preview.style.background = "#f6faff";
+    preview.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
     preview.innerHTML = `
-  <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
-  <p class="designation" style="margin:4px 0 10px 0;font-size:15px;color:#e60000;font-weight:600;">${designation}</p>
-  <p class="pledge" style="margin:0;font-size:16px;color:#000;">I pledge to ${pledge}</p>
-`;
+        <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
+        <p class="designation" style="margin:4px 0 10px 0;font-size:15px;color:#e60000;font-weight:600;">${designation}</p>
+        <p class="pledge" style="margin:0;font-size:16px;color:#000;">${pledge}</p>
+    `;
     quoteBox.replaceWith(preview);
 
+    // ✅ Success alert
     Swal.fire({
         icon: "success",
         title: "Pledge Submitted!",
@@ -58,12 +78,13 @@ downloadBtn.addEventListener("click", async () => {
         timer: 1200,
     });
 
-    // ✅ Enlarge circle just before capture
+    // ✅ Enlarge circle before capture
     photoArea.classList.add("expanded");
 
+    // ✅ Capture & download after animation
     setTimeout(() => {
         html2canvas(card, {
-            scale: window.devicePixelRatio, // use actual device scale
+            scale: window.devicePixelRatio, // high-res capture
             useCORS: true,
             backgroundColor: "#ffffff",
             imageSmoothingEnabled: true,
