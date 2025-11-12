@@ -92,16 +92,15 @@
      align-self: center;
  }
 
- /* ✅ Upload Circle */
  .upload-circle {
      margin: 25px auto 20px;
-     border: 1.5vw solid #4a90e2;
-     width: 40vw;
-     height: 40vw;
-     max-width: 240px;
-     max-height: 240px;
-     min-width: 170px;
-     min-height: 170px;
+     border: 1.8vw solid #4a90e2;
+     width: 52vw;
+     height: 52vw;
+     max-width: 285px;
+     max-height: 285px;
+     min-width: 180px;
+     min-height: 180px;
      border-radius: 50%;
      background-color: rgba(233, 243, 252, 0.7);
      position: relative;
@@ -116,12 +115,13 @@
      transition: all 0.3s ease;
  }
 
+ /* Same size after download */
  .upload-circle.expanded {
      width: 52vw;
      height: 52vw;
      max-width: 285px;
      max-height: 285px;
-     border-width: 2vw;
+     border-width: 1.8vw;
  }
 
  .upload-img-wrapper {
@@ -156,15 +156,15 @@
      z-index: 2;
  }
 
- /* ✅ Quote Box */
  .quote-box {
      position: relative;
-     border: 3px solid #004aad;
-     border-radius: 18px;
-     padding: 35px 40px 55px;
-     margin: 40px 0 30px;
+     border-left: 6px solid #004aad;
+     border-radius: 10px;
      background: transparent;
+     padding: 30px 35px 45px;
+     margin: 40px 0 30px;
      text-align: left;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
  }
 
  .quote-box,
