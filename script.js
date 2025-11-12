@@ -42,10 +42,6 @@ downloadBtn.addEventListener("click", async () => {
 
     const preview = document.createElement("div");
     preview.classList.add("final-preview");
-    preview.style.padding = "30px 40px";
-    preview.style.border = "3px solid #004aad";
-    preview.style.borderRadius = "18px";
-    preview.style.textAlign = "left";
     preview.style.fontFamily = "'Poppins', sans-serif";
     preview.innerHTML = `
   <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
