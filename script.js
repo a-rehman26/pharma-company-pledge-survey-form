@@ -48,10 +48,10 @@ downloadBtn.addEventListener("click", async () => {
     preview.style.textAlign = "left";
     preview.style.fontFamily = "'Poppins', sans-serif";
     preview.innerHTML = `
-    <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
-    <p class="designation" style="margin:2px 0 10px 0;font-size:15px;color:#e60000;font-weight:600;">${designation}</p>
-    <p class="pledge" style="margin:0;font-size:16px;color:#000;">I pledge to ${pledge}</p>
-  `;
+  <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
+  <p class="designation" style="margin:4px 0 10px 0;font-size:15px;color:#e60000;font-weight:600;">${designation}</p>
+  <p class="pledge" style="margin:0;font-size:16px;color:#000;">I pledge to ${pledge}</p>
+`;
     quoteBox.replaceWith(preview);
 
     Swal.fire({

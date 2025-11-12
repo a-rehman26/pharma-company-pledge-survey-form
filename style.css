@@ -174,10 +174,27 @@
      margin-right: auto;
  }
 
+ /* ✅ Quote Box (before download & JPEG output) */
+ .quote-box,
+ .final-preview {
+     position: relative;
+     border-left: 6px solid #004aad;
+     border-radius: 12px;
+     background: #f6faff;
+     padding: 30px 35px 45px;
+     margin: 40px auto 30px;
+     text-align: left;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+     max-width: 85%;
+ }
+
+ /* ✅ Responsive tweak for small screens */
  @media (max-width: 480px) {
 
      .quote-box,
      .final-preview {
+         padding: 24px 25px 40px;
+         border-left-width: 5px;
          max-width: 90%;
      }
  }
