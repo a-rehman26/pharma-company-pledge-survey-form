@@ -1,0 +1,392 @@
+ @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+ * {
+     box-sizing: border-box;
+ }
+
+ html,
+ body {
+     margin: 0;
+     padding: 0;
+ }
+
+ body {
+     font-family: "Poppins", sans-serif;
+     background: #ffffff;
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ /* ✅ Card */
+ .pledge-card {
+     background: url("./img/Asset 1@3x.png") no-repeat center center / 100% 100%;
+     max-width: 470px;
+     width: 100%;
+     text-align: center;
+     border-radius: 10px;
+     padding: 25px 20px 0;
+     position: relative;
+     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+     color: #000;
+     overflow: hidden;
+ }
+
+ /* Header */
+ .header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 10px;
+ }
+
+ .header-left {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     text-align: center;
+ }
+
+ .blue-circle {
+     width: 35px;
+     height: 35px;
+     border: 4px solid #004aad;
+     border-radius: 50%;
+     margin-bottom: 6px;
+ }
+
+ .header-left h6 {
+     font-size: 15px;
+     font-weight: 600;
+     margin: 0;
+     color: #000;
+ }
+
+ .header-left h6 span {
+     color: #4a90e2;
+ }
+
+ .header-left span {
+     font-size: 12px;
+     color: #004aad;
+ }
+
+ .header-right {
+     display: flex;
+     flex-direction: column;
+     text-align: center;
+     font-weight: 700;
+     color: #004aad;
+     font-size: 16.5px;
+     line-height: 1.2;
+     letter-spacing: 0.3px;
+     padding-right: 8px;
+ }
+
+ .header-right span {
+     display: block;
+ }
+
+ .header-right span:nth-child(2) {
+     align-self: center;
+ }
+
+ /* ✅ Upload Circle */
+ .upload-circle {
+     margin: 25px auto 20px;
+     border: 10px solid #4a90e2;
+     width: 200px;
+     height: 200px;
+     border-radius: 50%;
+     background-color: rgba(233, 243, 252, 0.7);
+     position: relative;
+     overflow: hidden;
+     cursor: pointer;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     color: #000;
+     font-weight: 600;
+     text-align: center;
+     transition: all 0.2s;
+ }
+
+ /* 🔹 After submit → make it larger */
+ .upload-circle.expanded {
+     width: 240px;
+     height: 240px;
+     border-width: 12px;
+ }
+
+ @media (max-width: 768px) {
+     .upload-circle.expanded {
+         width: 200px;
+         height: 200px;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .upload-circle.expanded {
+         width: 170px;
+         height: 170px;
+     }
+ }
+
+ .upload-circle:hover {
+     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+ }
+
+
+
+ /* 🩵 Upload circle — keep perfectly round in both browser & jpeg */
+ .upload-circle img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     clip-path: circle(50% at 50% 50%);
+ }
+
+ .upload-circle input[type="file"] {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     opacity: 0;
+     cursor: pointer;
+     z-index: 2;
+ }
+
+ /* ✅ Quote Box */
+ .quote-box {
+     position: relative;
+     border: 3px solid #004aad;
+     border-radius: 18px;
+     padding: 35px 40px 55px;
+     margin: 40px 0 30px;
+     background: transparent;
+     text-align: left;
+ }
+
+ .quote-box,
+ .final-preview {
+     max-width: 85%;
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+ @media (max-width: 480px) {
+
+     .quote-box,
+     .final-preview {
+         max-width: 90%;
+     }
+ }
+
+ .quote-box input,
+ .quote-box select {
+     border: none;
+     background: transparent;
+     width: 100%;
+     font-weight: 700;
+     font-size: 17px;
+     color: #000;
+     margin-bottom: 12px;
+     outline: none;
+ }
+
+ .quote-box input,
+ .quote-box select {
+     background: transparent !important;
+     color: #000 !important;
+     -webkit-text-fill-color: #000 !important;
+     box-shadow: 0 0 0px 1000px transparent inset !important;
+ }
+
+ .quote-box input:-webkit-autofill,
+ .quote-box select:-webkit-autofill {
+     transition: background-color 9999s ease-in-out 0s;
+     -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+     -webkit-text-fill-color: #000 !important;
+ }
+
+ /* ✅ Download Button */
+ .download-btn {
+     position: absolute;
+     left: 50%;
+     bottom: -28px;
+     transform: translateX(-50%);
+     background: #fff;
+     border: 1px solid #000;
+     border-radius: 25px;
+     padding: 8px 40px;
+     font-weight: 600;
+     font-size: 15px;
+     color: #000;
+     cursor: pointer;
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+     transition: all 0.3s ease;
+ }
+
+ .download-btn:hover {
+     background: #004aad;
+     color: #fff;
+     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+ }
+
+ /* ✅ Footer (Logo Bar) */
+ .logo-bar {
+     background: #fff;
+     margin: 40px -20px 0;
+     display: flex;
+     justify-content: space-around;
+     align-items: center;
+     border-top: none;
+     border-bottom-left-radius: 10px;
+     border-bottom-right-radius: 10px;
+     padding: 18px 0px;
+     flex-wrap: nowrap;
+ }
+
+ /* 🩵 Footer logos (balanced & responsive) */
+ .logo-bar img {
+     width: auto;
+     height: 90px;
+     object-fit: contain;
+     vertical-align: middle;
+     filter: brightness(1.1) contrast(1.1);
+ }
+
+ /* smaller 4th logo */
+ .logo-bar img:last-child {
+     height: 75px;
+     transform: scale(0.93);
+ }
+
+ /* ✅ Preview Styling */
+ .final-preview .name {
+     color: #004aad;
+     font-weight: 700;
+ }
+
+ .final-preview .designation {
+     color: #e60000;
+     font-weight: 600;
+ }
+
+ .final-preview .pledge {
+     color: #000;
+     font-weight: 500;
+ }
+
+ /* ✅ Responsive Fixes */
+ @media (max-width: 1024px) {
+     .pledge-card {
+         max-width: 90%;
+     }
+
+     .logo-bar img {
+         width: 22%;
+         height: 85px;
+     }
+
+     .logo-bar img:last-child {
+         width: 19%;
+         height: 65px;
+         transform: scale(0.93);
+     }
+ }
+
+ @media (max-width: 768px) {
+     .pledge-card {
+         padding: 20px 15px 0 15px;
+     }
+
+     .upload-circle {
+         width: 185px;
+         height: 185px;
+         border-width: 8px;
+     }
+
+     .quote-box {
+         padding: 25px 20px 45px;
+     }
+
+     .quote-box input,
+     .quote-box select {
+         font-size: 15px;
+     }
+
+     .download-btn {
+         bottom: -22px;
+         padding: 6px 30px;
+         font-size: 14px;
+     }
+
+     .logo-bar {
+         justify-content: space-around;
+         gap: 8px;
+         /* padding: 12px; */
+     }
+
+     .logo-bar img {
+         height: 85px;
+     }
+
+     .logo-bar img:last-child {
+         height: 70px;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .header-right {
+         font-size: 14px;
+     }
+
+     .header-left h6 {
+         font-size: 13px;
+     }
+
+     .blue-circle {
+         width: 28px;
+         height: 28px;
+         border-width: 3px;
+     }
+
+     .upload-circle {
+         width: 165px;
+         height: 165px;
+     }
+
+     .quote-box {
+         padding: 20px 18px 40px;
+     }
+
+     .download-btn {
+         padding: 5px 25px;
+         font-size: 13px;
+     }
+
+     .logo-bar img {
+         height: 80px;
+     }
+
+     .logo-bar img:last-child {
+         height: 68px;
+     }
+ }
+
+ @media (max-width: 360px) {
+
+     .upload-circle {
+         width: 160px;
+         height: 160px;
+     }
+
+     .logo-bar img {
+         height: 70px;
+     }
+
+     .logo-bar img:last-child {
+         height: 58px;
+     }
+ }
