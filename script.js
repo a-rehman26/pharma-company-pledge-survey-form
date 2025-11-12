@@ -12,7 +12,9 @@ function setupUploadListener(inputElement) {
         const reader = new FileReader();
         reader.onload = (ev) => {
             photoArea.innerHTML = `
-        <img src="${ev.target.result}" alt="photo" style="object-fit:cover;width:100%;height:100%;">
+        <div class="upload-img-wrapper">
+          <img src="${ev.target.result}" alt="photo">
+        </div>
         <input type="file" id="uploadPhoto" accept="image/*"
           style="opacity:0;position:absolute;inset:0;cursor:pointer;">
       `;
@@ -65,7 +67,7 @@ downloadBtn.addEventListener("click", async () => {
 
     setTimeout(() => {
         html2canvas(card, {
-            scale: 2,
+            scale: window.devicePixelRatio, // use actual device scale
             useCORS: true,
             backgroundColor: "#ffffff",
             imageSmoothingEnabled: true,
@@ -78,5 +80,4 @@ downloadBtn.addEventListener("click", async () => {
             window.location.reload(true);
         });
     }, 1300);
-
 });
