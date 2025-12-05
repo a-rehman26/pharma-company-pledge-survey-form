@@ -2,99 +2,158 @@ const photoArea = document.getElementById("photoArea");
 const uploadInput = document.getElementById("uploadPhoto");
 const downloadBtn = document.getElementById("downloadBtn");
 const card = document.getElementById("pledgeCard");
-const quoteBox = document.getElementById("quoteBox");
+let cropper;
 
-// 📸 Upload logic
-function setupUploadListener(inputElement) {
-    inputElement.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+// -------------------- PHOTO UPLOAD & CROP --------------------
+uploadInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            photoArea.innerHTML = `
-                <div class="upload-img-wrapper">
-                    <img src="${ev.target.result}" alt="photo">
-                </div>
-                <input type="file" id="uploadPhoto" accept="image/*"
-                    style="opacity:0;position:absolute;inset:0;cursor:pointer;">
-            `;
-            setupUploadListener(photoArea.querySelector("#uploadPhoto"));
-        };
-        reader.readAsDataURL(file);
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const cropImage = document.getElementById("cropImage");
+    const modalEl = document.getElementById("cropModal");
+    const cropBtn = document.getElementById("cropBtn");
+    cropImage.src = ev.target.result;
+
+    if (cropper) cropper.destroy();
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    cropper = new Cropper(cropImage, {
+      aspectRatio: 1,
+      viewMode: 1,
+      dragMode: "move",
+      background: false,
+      movable: true,
+      zoomable: true,
+      cropBoxResizable: true,
+      ready() {
+        cropper.setCropBoxData({ width: 250, height: 250 });
+      },
     });
-}
-setupUploadListener(uploadInput);
 
-// 💾 Download logic
-downloadBtn.addEventListener("click", async () => {
-    const name = document.getElementById("name").value.trim();
-    const designation = document.getElementById("designation").value.trim();
-    const pledge = document.getElementById("pledge").value;
-
-    // ✅ Check if photo uploaded
-    const hasPhoto = photoArea.querySelector("img");
-    if (!hasPhoto) {
-        Swal.fire({
-            icon: "warning",
-            title: "Photo Required",
-            text: "Please upload your photo before submitting your pledge.",
-        });
-        return;
-    }
-
-    // ✅ Check if text fields filled
-    if (!name || !designation || !pledge) {
-        Swal.fire({
-            icon: "warning",
-            title: "Incomplete Details",
-            text: "Please fill all fields before downloading.",
-        });
-        return;
-    }
-
-    // ✅ Replace quote box with preview
-    const preview = document.createElement("div");
-    preview.classList.add("final-preview");
-    preview.style.fontFamily = "'Poppins', sans-serif";
-    preview.style.padding = "30px 40px";
-    preview.style.borderLeft = "6px solid #004aad";
-    preview.style.borderRadius = "12px";
-    preview.style.background = "#f6faff";
-    preview.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-    preview.innerHTML = `
-        <p class="name" style="margin:0;font-size:20px;color:#004aad;font-weight:700;">${name}</p>
-        <p class="designation" style="margin:4px 0 10px 0;font-size:15px;color:#e60000;font-weight:600;">${designation}</p>
-        <p class="pledge" style="margin:0;font-size:16px;color:#000;">${pledge}</p>
+    const modalBody = modalEl.querySelector(".modal-body");
+    const controlUI = document.createElement("div");
+    controlUI.className = "extra-ui";
+    controlUI.innerHTML = `
+      <p style="margin-top:10px;font-size:13px;color:#555;">
+        Drag karein ya scroll se zoom karein apni photo adjust karne ke liye.
+      </p>
+      <div style="margin-top:8px;">
+        <button id="zoomIn" class="btn btn-sm btn-outline-primary me-2">Zoom +</button>
+        <button id="zoomOut" class="btn btn-sm btn-outline-primary">Zoom −</button>
+      </div>
+      <div style="margin-top:10px;">
+        <span style="font-size:12px;color:#777;">Preview:</span>
+        <div id="cropPreview" style="width:100px;height:100px;overflow:hidden;border-radius:50%;margin:auto;border:2px solid #ccc;"></div>
+      </div>
     `;
-    quoteBox.replaceWith(preview);
+    modalBody.appendChild(controlUI);
 
-    // ✅ Success alert
-    Swal.fire({
-        icon: "success",
-        title: "Pledge Submitted!",
-        text: "Your pledge has been recorded successfully.",
-        showConfirmButton: false,
-        timer: 1200,
+    const previewBox = controlUI.querySelector("#cropPreview");
+    cropImage.addEventListener("crop", () => {
+      const canvas = cropper.getCroppedCanvas({ width: 100, height: 100 });
+      if (canvas) {
+        previewBox.innerHTML = "";
+        previewBox.appendChild(canvas);
+      }
     });
 
-    // ✅ Enlarge circle before capture
-    photoArea.classList.add("expanded");
+    controlUI.querySelector("#zoomIn").onclick = () => cropper.zoom(0.1);
+    controlUI.querySelector("#zoomOut").onclick = () => cropper.zoom(-0.1);
 
-    // ✅ Capture & download after animation
-    setTimeout(() => {
-        html2canvas(card, {
-            scale: window.devicePixelRatio, // high-res capture
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            imageSmoothingEnabled: true,
-            imageSmoothingQuality: "high",
-        }).then((canvas) => {
-            const link = document.createElement("a");
-            link.download = "World_Diabetes_Day_Pledge.jpeg";
-            link.href = canvas.toDataURL("image/jpeg", 1.0);
-            link.click();
-            window.location.reload(true);
+    cropBtn.onclick = () => {
+      const canvas = cropper.getCroppedCanvas({
+        width: 400,
+        height: 400,
+        imageSmoothingQuality: "high",
+      });
+      if (!canvas) {
+        Swal.fire({
+          icon: "warning",
+          title: "No Crop",
+          text: "Please adjust your image before saving.",
         });
-    }, 1300);
+        return;
+      }
+
+      const croppedURL = canvas.toDataURL("image/jpeg", 1.0);
+      photoArea.innerHTML = `<div class="upload-img-wrapper"><img src="${croppedURL}" alt="photo"></div>`;
+      document.getElementById("croppedPhoto").value = croppedURL;
+      bootstrap.Modal.getInstance(modalEl).hide();
+      cropper.destroy();
+      cropper = null;
+      modalBody.querySelectorAll(".extra-ui").forEach((el) => el.remove());
+    };
+  };
+  reader.readAsDataURL(file);
 });
+
+// -------------------- DOWNLOAD BUTTON --------------------
+downloadBtn.addEventListener("click", async () => {
+  const name = document.getElementById("name").value.trim();
+  const designation = document.getElementById("designation").value.trim();
+  const pledge = document.getElementById("pledge").value;
+  const croppedPhoto = document.getElementById("croppedPhoto")?.value;
+
+  // validation
+  if (!croppedPhoto || !name || !designation || !pledge) {
+    Swal.fire({
+      icon: "warning",
+      title: "Incomplete Details",
+      text: "Please upload your photo and fill all fields.",
+    });
+    return;
+  }
+
+  // ensure colors visible in jpeg
+  document.getElementById("name").style.color = "#004aad";
+  document.getElementById("designation").style.color = "#e60000";
+  document.getElementById("pledge").style.color = "#000";
+
+  // ✅ STEP 1: Show immediate success SweetAlert
+  await Swal.fire({
+    icon: "success",
+    title: "Pledge Submitted!",
+    text: "Preparing your pledge image...",
+    showConfirmButton: false,
+    timer: 2000, // show for 2 sec only
+  });
+
+  // ✅ STEP 2: Generate JPEG after SweetAlert disappears
+  try {
+    const canvas = await html2canvas(card, { scale: 2, useCORS: true, backgroundColor: "#fff" });
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/jpeg", 1.0);
+    link.download = "World_Diabetes_Day_Pledge.jpeg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // ✅ STEP 3: After 10 sec show final SweetAlert
+    setTimeout(() => {
+      Swal.fire({
+        icon: "info",
+        title: "Download Complete!",
+        text: "Thank you for taking the pledge.",
+        confirmButtonText: "OK",
+      });
+    }, 10000);
+
+    // ✅ (Optional) Auto submit form after 2 sec
+    setTimeout(() => {
+      document.querySelector("form").submit();
+    }, 2000);
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "Failed to create JPEG image.",
+    });
+  }
+});
+
